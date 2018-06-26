@@ -1,6 +1,6 @@
 {
   "name": "vue-img-tag",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A simple vue2 component, just for img preview, can be used to file input preview",
   "main": "index.js",
   "scripts": {

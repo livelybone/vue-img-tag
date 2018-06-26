@@ -21,3 +21,4 @@ yarn-error.log*
 /test/
 /karma.*.js
 /.eslintrc.js
+/.eslintignore
