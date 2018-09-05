@@ -13,12 +13,14 @@ yarn-error.log*
 *.njsproj
 *.sln
 
-# not upload
-/webpack.*.js
+webpack.*.js
+rollup.*.js
 /src/
+/index.js
 
-/coverage/
-/test/
-/karma.*.js
+examples/
+test/
+coverage/
+/karma.conf.js
 /.eslintrc.js
 /.eslintignore

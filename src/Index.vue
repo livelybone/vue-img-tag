@@ -21,7 +21,7 @@ export default {
   data() {
     return {
       img: '',
-      defaultStyle: { maxWidth: '100%', maxHeight: '100%' }
+      defaultStyle: { maxWidth: '100%', maxHeight: '100%' },
     }
   },
   watch: {

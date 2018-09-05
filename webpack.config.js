@@ -3,11 +3,11 @@ const path = require('path');
 
 const config = {
   mode: 'production',
-  entry: { index: './src/index.vue' },
+  entry: { index: './src/Index.vue' },
   output: {
     path: path.resolve(__dirname, './lib'),
     filename: './[name].js',
-    library: 'VueSnackbar',
+    library: 'VueImgTag',
     libraryTarget: 'umd',
     globalObject: 'this',
   },
