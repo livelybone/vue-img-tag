@@ -1,7 +1,7 @@
 {
   "name": "vue-img-tag",
   "version": "2.0.0",
-  "description": "A simple vue2 component, just for img preview, can be used to file input preview",
+  "description": "A simple vue2 component, just for img preview, can be used to file input preview, support lazyload",
   "main": "./lib/umd/index.js",
   "module": "./lib/es/index.js",
   "unpkg": "./lib/umd/index.js",
@@ -55,10 +55,10 @@
     "karma-spec-reporter": "0.0.32",
     "karma-webpack": "^3.0.0",
     "mocha": "^5.2.0",
-    "rollup": "^0.65.1",
+    "rollup": "^0.65.0",
     "rollup-plugin-babel": "^3.0.7",
     "rollup-plugin-commonjs": "^9.1.6",
-    "rollup-plugin-node-resolve": "^3.4.0",
+    "rollup-plugin-node-resolve": "^3.3.0",
     "rollup-plugin-uglify": "^5.0.2",
     "rollup-plugin-vue": "^4.3.2",
     "vue": "^2.5.16",
@@ -66,5 +66,10 @@
     "vue-template-compiler": "^2.5.16",
     "webpack": "^4.12.1",
     "webpack-command": "^0.2.1"
+  },
+  "dependencies": {
+    "@livelybone/mouse-wheel": "^3.1.0",
+    "@livelybone/scroll-get": "^2.0.0",
+    "@livelybone/simple-observer": "^2.0.0"
   }
 }

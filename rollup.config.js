@@ -8,9 +8,9 @@ const conf = entry => Object.assign({}, baseConf, {
   output: entry.formats.map(format => ({
     file: `./lib/${format}/${entry.name}.js`,
     format,
-    name: 'VueSnackbar',
+    name: 'VueImgTag',
   })),
-  external: [],
+  external: entry.external ? ['@livelybone/mouse-wheel', '@livelybone/simple-observer', '@livelybone/scroll-get'] : [],
   plugins: Object.assign(
     [],
     baseConf.plugins,
@@ -19,6 +19,12 @@ const conf = entry => Object.assign({}, baseConf, {
 })
 
 export default [
-  { name: 'index', filename: './src/Index.vue', formats: ['es'], needUglify: false },
+  {
+    name: 'index',
+    filename: './src/Index.vue',
+    formats: ['es'],
+    needUglify: false,
+    external: true,
+  },
   { name: 'index', filename: './src/Index.vue', formats: ['umd'] },
 ].map(conf)
