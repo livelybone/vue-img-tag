@@ -13,6 +13,8 @@ https://github.com/livelybone/vue-img-tag.git
 ## Demo
 https://github.com/livelybone/vue-img-tag#readme
 
+## Example
+See: [example](https://github.com/livelybone/vue-img-tag/blob/master/examples/test.html)
 
 ## Installation
 ```bash
@@ -62,3 +64,12 @@ const defaultConf = {
 
 > The instance is mounted on the `window` object, so, your can use it out of the component via `window[observer.key]`
 > or you can even define it out of the component via `window[observer.key]`(your should make sure that it is an instance of Observer, with an `unbind` function)
+
+## Style
+For building style, you can use the css file in lib directory.
+```js
+import '@livelybone/vue-img-tag/lib/css/index.css';
+```
+
+Or, you can build your custom style by copying and editing `index.css`
+
