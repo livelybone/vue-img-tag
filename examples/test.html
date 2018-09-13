@@ -21,7 +21,7 @@
 console.log(VueImgTag)
 var img = new Vue({
   el: '#module',
-  template: '<img-tag loadingImg="#BD622F" :src="img" errorImg="./error.jpg" lazy style="width:1080px;height:1920px" @load="log" :preventValue="-1000"></img-tag>',
+  template: '<img-tag loadingImg="./loading.gif" :src="img" errorImg="./error.jpg" lazy style="width:1080px;height:1920px" @load="log" :preventValue="-1000"></img-tag>',
   data: function () {
     return {
       img: 'http://justifiedgrid.com/wp-content/uploads/life/biking/137646854.jpg'
