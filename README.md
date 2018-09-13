@@ -49,7 +49,7 @@ new Vue({
 ```js
 const defaultConf = {
   key: 'windowScrollObserver', // key of context `window`, the singleton observer will be window[key]
-  eventName: 'scroll', // the event triggered on `eventTarget` will publish a data to the subscribers of singleton observer, so that we can judge whether img should load or not
+  eventName: 'scroll', // the event triggered on `eventTarget` will push an event to the subscribers of singleton observer, so that we can judge whether img should load or not
   eventTarget: window, // what dom do event triggered on
 }
 ```
@@ -58,7 +58,7 @@ const defaultConf = {
 > This is an instance of [Observer](https://github.com/livelybone/simple-observer/blob/master/src/index.js),
 > with an extra prop of `unbind` function which is used to remove `eventName` listener of `eventTarget`
 
-> If the `observer.key` you set for the `VueImgTag` instances used in your page is the same, like default `windowScrollObserver`, all the instances will share one singletonObserver. 
+> If the `observer.key` like the default `windowScrollObserver` you set for the `VueImgTag` instances used in your page is the same, all the instances will share one singletonObserver. 
 
 > The instance is mounted on the `window` object, so, your can use it out of the component via `window[observer.key]`
 > or you can even define it out of the component via `window[observer.key]`(your should make sure that it is an instance of Observer, with an `unbind` function)
