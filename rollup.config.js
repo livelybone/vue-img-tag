@@ -10,12 +10,8 @@ const conf = entry => Object.assign({}, baseConf, {
     format,
     name: 'VueImgTag',
   })),
-  external: entry.external ? ['@livelybone/mouse-wheel', '@livelybone/simple-observer', '@livelybone/scroll-get'] : [],
-  plugins: Object.assign(
-    [],
-    baseConf.plugins,
-    [(entry.needUglify !== false && uglify())],
-  ),
+  external: entry.external ? ['@livelybone/simple-observer', '@livelybone/scroll-get'] : [],
+  plugins: baseConf.plugins.concat([(entry.needUglify !== false && uglify())]),
 })
 
 export default [

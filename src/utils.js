@@ -1,17 +1,20 @@
-import MouseWheel from '@livelybone/mouse-wheel'
-import SimpleObserver from '@livelybone/simple-observer'
+import * as SimpleObserver from '@livelybone/simple-observer'
 
 /**
  * @method SingletonObserver
  * @param {String} key, key of `window`
+ * @param {Window, Element} eventTarget, target of event
+ * @param {String} eventName, name of event
  * @return {SimpleObserver} with prop unbind<function>
  * */
-export function SingletonObserver(key = 'WheelObserver') {
-  if (!window[key]) {
-    window[key] = new SimpleObserver((next) => {
-      this.next = next
+export function SingletonObserver({ key = 'WindowScrollObserver', eventTarget = window, eventName = 'scroll' }) {
+  let next
+  if (!window[key] || !(window[key] instanceof SimpleObserver.Observer)) {
+    window[key] = new SimpleObserver.Observer((n) => {
+      next = n
     })
-    window[key].unbind = MouseWheel.bind(ev => this.next(ev))
+    eventTarget.addEventListener(eventName, next)
+    window[key].unbind = () => eventTarget.removeEventListener(eventName, next)
   }
   return window[key]
 }

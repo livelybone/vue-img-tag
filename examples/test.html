@@ -7,23 +7,23 @@
   <script src="https://cdn.jsdelivr.net/npm/vue"></script>
   <script src="../lib/umd/index.js"></script>
 </head>
-<body style="background: #333">
+<body style="padding: 200vh 0;background: #333">
 <div id="module"></div>
 
 <script>
+console.log(VueImgTag)
 new Vue({
   el: '#module',
-  template: '',
+  template: '<img-tag defaultImg="./default-img.jpg" src="./img-1.jpg" errorImg="./error.jpg" lazy style="width:1920px;height:1080px" @load="log"></img-tag>',
   data: function () {
-    return {
-    }
+    return {}
   },
   methods: {
     log: function (val) {
       console.log(val)
     },
   },
-  components: { 'vue-table': VueImgTag },
+  components: { 'img-tag': VueImgTag },
 })
 </script>
 </body>
