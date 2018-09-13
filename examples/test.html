@@ -6,17 +6,26 @@
   <title>VueTable</title>
   <script src="https://cdn.jsdelivr.net/npm/vue"></script>
   <script src="../lib/umd/index.js"></script>
+  <link rel="stylesheet" href="../lib/css/index.css">
+  <style>
+  .wrap {
+    background: #666;
+  }
+  </style>
 </head>
 <body style="padding: 200vh 0;background: #333">
+<input type="file" id="input">
 <div id="module"></div>
 
 <script>
 console.log(VueImgTag)
-new Vue({
+var img = new Vue({
   el: '#module',
-  template: '<img-tag defaultImg="./default-img.jpg" src="./img-1.jpg" errorImg="./error.jpg" lazy style="width:1920px;height:1080px" @load="log"></img-tag>',
+  template: '<img-tag loadingImg="#BD622F" :src="img" errorImg="./error.jpg" lazy style="width:1080px;height:1920px" @load="log" :preventValue="-1000"></img-tag>',
   data: function () {
-    return {}
+    return {
+      img: 'http://justifiedgrid.com/wp-content/uploads/life/biking/137646854.jpg'
+    }
   },
   methods: {
     log: function (val) {
@@ -24,6 +33,10 @@ new Vue({
     },
   },
   components: { 'img-tag': VueImgTag },
+})
+
+document.getElementById('input').addEventListener('change', function (ev) {
+  img.img = ev.target.files[0]
 })
 </script>
 </body>

@@ -1,5 +1,10 @@
 <template>
-  <img ref="image" :src="img.url||img||defaultImg" v-on="listeners">
+  <div v-if="showImg===loadingImg||showImg===errorImg" class="wrap" ref="image"
+       :style="showImg===loadingImg&&isColor(showImg)?{background: showImg}:{}">
+    <img v-if="showImg===errorImg||!isColor(showImg)" :src="showImg"
+         :style="imgStyle" v-on="listeners" ref="imageAlt">
+  </div>
+  <img v-else ref="image" :src="showImg" v-on="listeners">
 </template>
 
 <script>
@@ -27,7 +32,7 @@ export default {
   },
   props: {
     lazy: Boolean,
-    defaultImg: String,
+    loadingImg: String,
     errorImg: String,
     src: [String, FileList, File, Promise],
     observer: {
@@ -37,17 +42,26 @@ export default {
       type: Object,
     },
     preventValue: {
-      default: 50,
+      default: 0,
       type: Number,
     },
   },
   data() {
     return {
       img: '',
+      imgPre: '',
+      imgSize: {},
       subscription: null,
     }
   },
   computed: {
+    showImg() {
+      return this.img || this.loadingImg
+    },
+    imgStyle() {
+      const { width = 0, height = 0 } = this.imgSize
+      return { margin: `-${height / 2}px 0 0 -${width / 2}px` }
+    },
     loadable() {
       return !this.lazy || (this.subscription === false)
     },
@@ -58,7 +72,6 @@ export default {
       return {
         ...this.$listeners,
         load: this.onLoad,
-        error: this.onError,
       }
     },
   },
@@ -66,8 +79,19 @@ export default {
     src(val) {
       this.convert(val)
     },
+    imgPre() {
+      this.imgRequest()
+    },
   },
   methods: {
+    isColor(val) {
+      const reg = [
+        /^#([\da-fA-f]{3,4}|[\da-fA-f]{6}|[\da-fA-f]{8})$/,
+        /^rgb\((\s*(\d|\d{2}|1\d{2}|2[0-4]\d|25[0-5])\s*,){3}\)$/,
+        /^rgba\((\s*(\d|\d{2}|1\d{2}|2[0-4]\d|25[0-5])\s*,){3}\s*\d*.?\d*\)$/,
+      ]
+      return reg.some(r => r.test(val))
+    },
     listener() {
       if (this.$refs.image) {
         const { clientLeft, clientTop } = ScrollGet.posRelativeToClient(this.$refs.image)
@@ -105,42 +129,58 @@ export default {
     },
     convert(val, force = false) {
       if (force || this.loadable) {
+        this.img = ''
         if (val && val.then) {
           /**
            * Applicable to images that require verification of login
            */
           val.then((file) => {
-            if (file instanceof Blob) this.img = this.blobToURL(file)
-            else if (typeof file === 'string') this.img = file
+            if (file instanceof Blob) this.imgPre = this.blobToURL(file)
+            else if (typeof file === 'string') this.imgPre = file
             else {
               this.$emit('error', 'The resolved value of prop src(Promise) is invalid')
-              this.img = this.errorImg
+              this.imgPre = this.errorImg
             }
           })
         } else {
-          const value = typeof val === 'string' ? val : val.length && val[0]
+          const value = typeof val === 'string' || !val ? val : val.length && val[0] || val
           if (!value || typeof value === 'string') {
-            this.img = value
+            this.imgPre = value
           } else if (value instanceof File) {
-            this.img = this.blobToURL(value)
+            this.imgPre = this.blobToURL(value)
           } else {
-            this.img = this.errorImg
+            this.imgPre = this.errorImg
           }
         }
       }
     },
-    onLoad(ev) {
-      if (this.img.revokeFn) {
-        this.img.revokeFn()
+    imgRequest() {
+      if (this.imgPre) {
+        const url = this.imgPre.url || this.imgPre
+        const img = document.createElement('img')
+        img.src = url
+        img.style.display = 'none'
+        img.onload = () => {
+          this.img = url
+          if (this.imgPre.revokeFn) {
+            this.imgPre.revokeFn()
+          }
+          document.body.removeChild(img)
+        }
+        img.onerror = () => {
+          this.img = this.errorImg
+        }
+        document.body.appendChild(img)
       }
-      this.trigger('load', ev)
     },
-    onError(ev) {
-      this.img = this.errorImg
-      this.trigger('error', ev)
-    },
-    trigger(name, ev) {
-      const event = this.$listeners[name]
+    onLoad(ev) {
+      if (this.$refs.imageAlt) {
+        this.imgSize = {
+          width: this.$refs.imageAlt.offsetWidth,
+          height: this.$refs.imageAlt.offsetHeight,
+        }
+      }
+      const event = this.$listeners.load
       if (event) event(ev)
     },
   },

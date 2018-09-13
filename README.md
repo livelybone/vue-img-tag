@@ -40,10 +40,10 @@ new Vue({
 | Name              | Type                                      | DefaultValue         | Description  |
 | ----------------- | ----------------------------------------- | -------------------- | ------------ |
 | `lazy`            | `Boolean`                                 | `false`              | Enable lazy mode or not |
-| `defaultImg`      | `String`                                  | none                 |  |
+| `loadingImg`      | `String`                                  | none                 | Can be `url` or `color`(should be rgb, rgba or hex)  |
 | `errorImg`        | `String`                                  | none                 |  |
 | `src`             | `[String, FileList, File, Promise]`       | none                 |  |
-| `preventValue`    | `Number`                                  | `50`                 | The boundary condition |
+| `preventValue`    | `Number`                                  | `0`                  | The boundary condition |
 | `observer`        | `Object`                                  | `defaultConf`        | Config of singleton observer which is use to judge whether img should load or not, especially useful when lazy mode is enabled |
 
 ```js
