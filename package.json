@@ -1,12 +1,12 @@
 {
   "name": "vue-img-tag",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "A simple vue2 component, just for img preview, can be used to file input preview, support lazyload",
   "main": "./lib/umd/index.js",
   "module": "./lib/es/index.js",
   "unpkg": "./lib/umd/index.js",
   "scripts": {
-    "build": "rimraf ./lib && node-sass ./src/css/index.css ./lib/css/index.css --output-style compress && rollup -c",
+    "build": "rimraf ./lib && node-sass ./src/css/index.css ./lib/css/index.css --output-style compress && cross-env NODE_ENV=production rollup -c",
     "eslint": "eslint ./src/index.vue",
     "test": "cross-env BABEL_ENV=test karma start --single-run"
   },
