@@ -2,6 +2,7 @@
 ![gzip with dependencies: 5.7kb](https://img.shields.io/badge/gzip--with--dependencies-5.7kb-brightgreen.svg "gzip with dependencies: 5.7kb")
 ![pkg.module](https://img.shields.io/badge/pkg.module-supported-blue.svg "pkg.module")
 ![lazyload supported](https://img.shields.io/badge/lazyload-supported-green.svg "lazyload supported")
+![ssr supported](https://img.shields.io/badge/ssr-supported-green.svg "ssr supported")
 
 > `pkg.module supported`, which means that you can apply tree-shaking in you project
 

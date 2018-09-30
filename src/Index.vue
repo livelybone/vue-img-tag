@@ -17,6 +17,9 @@ const defaultConfig = Object.freeze({
   eventName: 'scroll',
 })
 
+const { FileList, File, Promise } = typeof window === 'undefined'
+  ? { FileList: Object, File: Object, Promise: Object } : window
+
 export default {
   name: 'ImgTag',
   mounted() {
