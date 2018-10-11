@@ -6,7 +6,7 @@
 
 > `pkg.module supported`, which means that you can apply tree-shaking in you project
 
-A simple vue2 component, just for img preview, can be used to file input preview
+A simple vue2 component, just for img preview, can be used to image input preview
 
 ## repository
 https://github.com/livelybone/vue-img-tag.git
