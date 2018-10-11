@@ -1,6 +1,6 @@
 {
   "name": "vue-img-tag",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "A simple vue2 component, just for img preview, can be used to file input preview, support lazyload",
   "main": "./lib/umd/index.js",
   "module": "./lib/es/index.js",
@@ -69,6 +69,7 @@
   },
   "dependencies": {
     "@livelybone/scroll-get": "^2.0.1",
-    "@livelybone/simple-observer": "^2.0.1"
+    "@livelybone/simple-observer": "^2.0.1",
+    "base64-blob": "^1.1.0"
   }
 }

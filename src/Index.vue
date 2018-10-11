@@ -9,6 +9,7 @@
 
 <script>
 import * as ScrollGet from '@livelybone/scroll-get'
+import { blobToBase64 } from 'base64-blob'
 import { SingletonObserver } from './utils'
 
 const defaultConfig = Object.freeze({
@@ -125,10 +126,7 @@ export default {
       }
     },
     blobToURL(blob) {
-      return {
-        url: window.URL.createObjectURL(blob),
-        revokeFn: () => window.URL.revokeObjectURL(blob),
-      }
+      return blobToBase64(blob)
     },
     convert(val, force = false) {
       if (force || this.loadable) {
@@ -138,8 +136,11 @@ export default {
            * Applicable to images that require verification of login
            */
           val.then((file) => {
-            if (file instanceof Blob) this.imgPre = this.blobToURL(file)
-            else if (typeof file === 'string') this.imgPre = file
+            if (file instanceof Blob) {
+              this.blobToURL(file).then((url) => {
+                this.imgPre = url
+              })
+            } else if (typeof file === 'string') this.imgPre = file
             else {
               this.$emit('error', 'The resolved value of prop src(Promise) is invalid')
               this.imgPre = this.errorImg
@@ -150,7 +151,9 @@ export default {
           if (!value || typeof value === 'string') {
             this.imgPre = value
           } else if (value instanceof File) {
-            this.imgPre = this.blobToURL(value)
+            this.blobToURL(value).then((url) => {
+              this.imgPre = url
+            })
           } else {
             this.imgPre = this.errorImg
           }
