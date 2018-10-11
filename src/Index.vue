@@ -1,8 +1,6 @@
 <template>
-  <div v-if="showImg===loadingImg||showImg===errorImg" class="wrap" ref="image"
-       :style="showImg===loadingImg&&isColor(showImg)?{background: showImg}:{}">
-    <img v-if="showImg===errorImg||!isColor(showImg)" :src="showImg"
-         :style="imgStyle" v-on="listeners" ref="imageAlt">
+  <div v-if="showImg===loadingImg||showImg===errorImg" class="wrap" ref="image" :style="wrapStyle">
+    <img v-if="showExceptionImg" :src="showImg" :style="imgStyle" v-on="listeners" ref="imageAlt">
   </div>
   <img v-else ref="image" :src="showImg" v-on="listeners">
 </template>
@@ -10,10 +8,8 @@
 <script>
 import * as ScrollGet from '@livelybone/scroll-get'
 import { blobToBase64 } from 'base64-blob'
-import { SingletonObserver } from './utils'
 
 const defaultConfig = Object.freeze({
-  key: 'WindowScrollObserver',
   eventTarget: typeof window !== 'undefined' ? window : '',
   eventName: 'scroll',
 })
@@ -27,19 +23,19 @@ export default {
     if (this.lazy) {
       this.listener()
       if (!this.loadable) {
-        this.subscription = SingletonObserver(this.observerConf).subscribe(this.listener)
+        this.eventConf.eventTarget.addEventListener(this.eventConf.eventName, this.listener)
       }
     } else this.convert(this.src)
   },
   beforeDestroy() {
-    this.unsubscribe(true)
+    this.unbind()
   },
   props: {
     lazy: Boolean,
     loadingImg: String,
     errorImg: String,
     src: [String, FileList, File, Promise],
-    observer: {
+    event: {
       default() {
         return defaultConfig
       },
@@ -55,7 +51,7 @@ export default {
       img: '',
       imgPre: '',
       imgSize: {},
-      subscription: null,
+      loaded: false,
     }
   },
   computed: {
@@ -63,20 +59,36 @@ export default {
       return this.img || this.loadingImg
     },
     imgStyle() {
+      const defaultS = {
+        position: 'absolute',
+        left: '50%',
+        top: '50%',
+      }
       const { width = 0, height = 0 } = this.imgSize
-      return { margin: `-${height / 2}px 0 0 -${width / 2}px` }
+      return { ...defaultS, margin: `-${height / 2}px 0 0 -${width / 2}px` }
     },
     loadable() {
-      return !this.lazy || (this.subscription === false)
+      return !this.lazy || (this.loaded === true)
     },
-    observerConf() {
-      return { ...defaultConfig, ...this.observer }
+    eventConf() {
+      return { ...defaultConfig, ...this.event }
     },
     listeners() {
       return {
         ...this.$listeners,
         load: this.onLoad,
       }
+    },
+    showExceptionImg() {
+      return this.showImg === this.errorImg || !this.isColor(this.showImg)
+    },
+    wrapStyle() {
+      const defaultS = {
+        display: 'inline-block',
+        position: 'relative',
+        overflow: 'hidden',
+      }
+      return this.showExceptionImg ? defaultS : { ...defaultS, background: this.showImg }
     },
   },
   watch: {
@@ -102,31 +114,14 @@ export default {
         const { clientHeight, clientWidth } = document.documentElement
         if (clientLeft - clientWidth < this.preventValue
           && clientTop - clientHeight < this.preventValue) {
-          this.unsubscribe()
+          this.unbind()
           this.convert(this.src, true)
         }
       }
     },
-    unsubscribe(isEnd = false) {
-      if (this.subscription) {
-        this.subscription.unsubscribe()
-      }
-      this.subscription = false
-
-      if (isEnd) {
-        /**
-         * Destroy observer singleton if it have no subscribe
-         * Then remove event listener of eventTarget
-         * */
-        const singleton = window[this.observerConf.key]
-        if (singleton && singleton.subscribes.length < 1) {
-          singleton.unbind()
-          window[this.observerConf.key] = null
-        }
-      }
-    },
-    blobToURL(blob) {
-      return blobToBase64(blob)
+    unbind() {
+      this.eventConf.eventTarget.removeEventListener(this.eventConf.eventName, this.listener)
+      this.loaded = true
     },
     convert(val, force = false) {
       if (force || this.loadable) {
@@ -137,9 +132,9 @@ export default {
            */
           val.then((file) => {
             if (file instanceof Blob) {
-              this.blobToURL(file).then((url) => {
+              blobToBase64(file).then((url) => {
                 this.imgPre = url
-              })
+              }).catch(console.error)
             } else if (typeof file === 'string') this.imgPre = file
             else {
               this.$emit('error', 'The resolved value of prop src(Promise) is invalid')
@@ -151,9 +146,9 @@ export default {
           if (!value || typeof value === 'string') {
             this.imgPre = value
           } else if (value instanceof File) {
-            this.blobToURL(value).then((url) => {
+            blobToBase64(value).then((url) => {
               this.imgPre = url
-            })
+            }).catch(console.error)
           } else {
             this.imgPre = this.errorImg
           }
@@ -162,21 +157,15 @@ export default {
     },
     imgRequest() {
       if (this.imgPre) {
-        const url = this.imgPre.url || this.imgPre
         const img = document.createElement('img')
-        img.src = url
-        img.style.display = 'none'
         img.onload = () => {
-          this.img = url
-          if (this.imgPre.revokeFn) {
-            this.imgPre.revokeFn()
-          }
-          document.body.removeChild(img)
+          this.img = this.imgPre
         }
         img.onerror = () => {
           this.img = this.errorImg
         }
-        document.body.appendChild(img)
+        img.src = this.imgPre
+        if (img.complete) this.img = this.imgPre
       }
     },
     onLoad(ev) {

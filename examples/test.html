@@ -7,7 +7,6 @@
   <script src="https://unpkg.com/babel-polyfill@6.26.0/dist/polyfill.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue"></script>
   <script src="../lib/umd/index.js"></script>
-  <link rel="stylesheet" href="../lib/css/index.css">
   <style>
   .wrap {
     background: #666;
@@ -25,7 +24,7 @@ var img = new Vue({
   template: '<img-tag loadingImg="./loading.gif" :src="img" errorImg="./error.jpg" lazy style="width:1080px;height:1920px" @load="log" :preventValue="-1000"></img-tag>',
   data: function () {
     return {
-      img: 'http://justifiedgrid.com/wp-content/uploads/life/biking/137646854.jpg'
+      img: 'https://justifiedgrid.com/wp-content/uploads/life/biking/137646854.jpg'
     }
   },
   methods: {
@@ -38,6 +37,7 @@ var img = new Vue({
 
 document.getElementById('input').addEventListener('change', function (ev) {
   img.img = ev.target.files[0]
+  console.log(img.img)
 })
 </script>
 </body>

@@ -15,7 +15,8 @@ module.exports = {
     'object-shorthand': [2, 'always', { avoidQuotes: false }],
     'object-curly-newline': 'off',
     'camelcase': 'off',
-    'no-mixed-operators':'off',
-    'semi': 'off'
+    'no-mixed-operators': 'off',
+    'semi': 'off',
+    'no-console': ['error', { allow: ['error'] }],
   },
-};
+}
