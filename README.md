@@ -1,4 +1,6 @@
 # vue-img-tag
+[![NPM Version](http://img.shields.io/npm/v/vue-img-tag.svg?style=flat-square)](https://www.npmjs.com/package/vue-img-tag)
+[![Download Month](http://img.shields.io/npm/dm/vue-img-tag.svg?style=flat-square)](https://www.npmjs.com/package/vue-img-tag)
 ![gzip with dependencies: 1.9kb](https://img.shields.io/badge/gzip--with--dependencies-1.9kb-brightgreen.svg "gzip with dependencies: 1.9kb")
 ![pkg.module](https://img.shields.io/badge/pkg.module-supported-blue.svg "pkg.module")
 ![lazyload supported](https://img.shields.io/badge/lazyload-supported-green.svg "lazyload supported")
