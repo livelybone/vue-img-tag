@@ -14,7 +14,7 @@ A simple vue2 component, just for img preview, can be used to image input previe
 https://github.com/livelybone/vue-img-tag.git
 
 ## Demo
-https://github.com/livelybone/vue-img-tag#readme
+https://livelybone.github.io/vue/vue-img-tag
 
 ## Example
 See: [example](https://github.com/livelybone/vue-img-tag/blob/master/examples/test.html)

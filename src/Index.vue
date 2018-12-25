@@ -1,8 +1,16 @@
 <template>
-  <div v-if="showImg===loadingImg||showImg===errorImg" class="wrap" ref="image" :style="wrapStyle">
-    <img v-if="showExceptionImg" :src="showImg" :style="imgStyle" v-on="listeners" ref="imageAlt">
+  <div v-if="showImg===loadingImg||showImg===errorImg"
+       class="wrap" ref="image"
+       :style="wrapStyle">
+    <img v-if="showExceptionImg"
+         :src="showImg"
+         :style="imgStyle"
+         v-on="listeners"
+         ref="imageAlt">
   </div>
-  <img v-else ref="image" :src="showImg" v-on="listeners">
+  <img v-else ref="image"
+       :src="showImg"
+       v-on="listeners">
 </template>
 
 <script>
@@ -19,17 +27,6 @@ const { FileList, File, Promise } = typeof window === 'undefined'
 
 export default {
   name: 'ImgTag',
-  mounted() {
-    if (this.lazy) {
-      this.listener()
-      if (!this.loadable) {
-        this.eventConf.eventTarget.addEventListener(this.eventConf.eventName, this.listener)
-      }
-    } else this.convert(this.src)
-  },
-  beforeDestroy() {
-    this.unbind()
-  },
   props: {
     lazy: Boolean,
     loadingImg: String,
@@ -179,6 +176,16 @@ export default {
       if (event) event(ev)
     },
   },
-  components: {},
+  mounted() {
+    if (this.lazy) {
+      this.listener()
+      if (!this.loadable) {
+        this.eventConf.eventTarget.addEventListener(this.eventConf.eventName, this.listener)
+      }
+    } else this.convert(this.src)
+  },
+  beforeDestroy() {
+    this.unbind()
+  },
 }
 </script>
