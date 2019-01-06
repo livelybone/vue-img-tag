@@ -130,26 +130,34 @@ export default {
           val.then((file) => {
             if (file instanceof Blob) {
               blobToBase64(file).then((url) => {
-                this.imgPre = url
+                this.setImgPre(url)
               }).catch(console.error)
-            } else if (typeof file === 'string') this.imgPre = file
-            else {
+            } else if (typeof file === 'string') {
+              this.setImgPre(file)
+            } else {
               this.$emit('error', 'The resolved value of prop src(Promise) is invalid')
-              this.imgPre = this.errorImg
+              this.setImgPre(this.errorImg)
             }
           })
         } else {
           const value = typeof val === 'string' || !val ? val : val.length && val[0] || val
           if (!value || typeof value === 'string') {
-            this.imgPre = value
+            this.setImgPre(value)
           } else if (value instanceof File) {
             blobToBase64(value).then((url) => {
-              this.imgPre = url
+              this.setImgPre(url)
             }).catch(console.error)
           } else {
-            this.imgPre = this.errorImg
+            this.setImgPre(this.errorImg)
           }
         }
+      }
+    },
+    setImgPre(val) {
+      if (this.imgPre === val) {
+        this.img = val
+      } else {
+        this.imgPre = val
       }
     },
     imgRequest() {
