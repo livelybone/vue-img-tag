@@ -1,6 +1,6 @@
 {
   "name": "vue-img-tag",
-  "version": "3.5.0",
+  "version": "3.5.1",
   "description": "A simple vue2 component, just for img preview, can be used to file input preview, support lazyload",
   "main": "./lib/umd/index.js",
   "module": "./lib/es/index.js",
@@ -28,7 +28,7 @@
   "bugs": {
     "url": "https://github.com/livelybone/vue-img-tag/issues"
   },
-  "homepage": "https://livelybone.github.io/vue/vue-img-tag",
+  "homepage": "https://livelybone.github.io/vue/vue-img-tag/",
   "devDependencies": {
     "@vue/test-utils": "^1.0.0-beta.20",
     "babel-core": "^6.26.3",
