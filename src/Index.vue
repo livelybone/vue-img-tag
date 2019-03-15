@@ -16,6 +16,7 @@
 <script>
 import * as ScrollGet from '@livelybone/scroll-get'
 import { blobToBase64 } from 'base64-blob'
+import { throttle } from 'throttle-debounce'
 
 const defaultConfig = Object.freeze({
   eventTarget: typeof window !== 'undefined' ? window : '',
@@ -49,6 +50,7 @@ export default {
       imgPre: '',
       imgSize: {},
       loaded: false,
+      listener: null,
     }
   },
   computed: {
@@ -105,7 +107,7 @@ export default {
       ]
       return reg.some(r => r.test(val))
     },
-    listener() {
+    handler() {
       if (this.$refs.image) {
         const { clientLeft, clientTop } = ScrollGet.posRelativeToClient(this.$refs.image)
         const { clientHeight, clientWidth } = document.documentElement
@@ -186,14 +188,13 @@ export default {
   },
   mounted() {
     if (this.lazy) {
-      this.listener()
+      this.handler()
       if (!this.loadable) {
+        this.listener = throttle(300, this.handler)
         this.eventConf.eventTarget.addEventListener(this.eventConf.eventName, this.listener)
+        this.$on('hook:beforeDestroy', this.unbind)
       }
     } else this.convert(this.src)
-  },
-  beforeDestroy() {
-    this.unbind()
   },
 }
 </script>
