@@ -1,5 +1,6 @@
 /* For build */
 import { uglify } from 'rollup-plugin-uglify'
+import packageConf from './package.json'
 
 const baseConf = require('./rollup.config.base')
 
@@ -10,7 +11,7 @@ const conf = entry => Object.assign({}, baseConf, {
     format,
     name: 'VueImgTag',
   })),
-  external: entry.external ? ['@livelybone/simple-observer', '@livelybone/scroll-get', 'base64-blob'] : [],
+  external: entry.external ? Object.keys(packageConf.dependencies) : [],
   plugins: baseConf.plugins.concat([(entry.needUglify !== false && uglify())]),
 })
 
