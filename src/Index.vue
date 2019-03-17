@@ -23,8 +23,8 @@ const defaultConfig = Object.freeze({
   eventName: 'scroll',
 })
 
-const { FileList, File, Promise } = typeof window === 'undefined'
-  ? { FileList: Object, File: Object, Promise: Object } : window
+const { FileList, File, Promise, Blob } = typeof window === 'undefined'
+  ? { FileList: Object, File: Object, Promise: Object, Blob: Object } : window
 
 export default {
   name: 'ImgTag',
@@ -87,7 +87,10 @@ export default {
         position: 'relative',
         overflow: 'hidden',
       }
-      return this.showExceptionImg ? defaultS : { ...defaultS, background: this.showImg }
+      return this.showExceptionImg ? defaultS : {
+        ...defaultS,
+        background: this.showImg,
+      }
     },
   },
   watch: {
